@@ -44,6 +44,8 @@ public class myCanvas extends View {
         Log.d("mytag", "started here");
         currentBrushType = brushTypes.DOT;
 
+        startPoint = new PointF();
+        endPoint = new PointF();
         paint = new Paint();
         path = new Path();
         paint.setAntiAlias(true);
@@ -70,8 +72,10 @@ public class myCanvas extends View {
                 break;
             case RECT:
                 break;
+
             case CIRCLE:
                 break;
+
             default:
                 break;
         }
@@ -90,16 +94,14 @@ public class myCanvas extends View {
             case MotionEvent.ACTION_DOWN:
                 path.moveTo(x,y);
                 startPoint = new PointF(x,y);
-                endPoint = new PointF();
-                return true;
+                break;
 
             case MotionEvent.ACTION_MOVE:
                 path.lineTo(x,y);
-
                 break;
 
             case MotionEvent.ACTION_UP:
-                endPoint.set(x,y);
+                endPoint = new PointF(x,y);
                 break;
 
             default:
@@ -117,10 +119,13 @@ public class myCanvas extends View {
         switch (i){
             case 0:
                 currentBrushType = brushTypes.DOT;
+                Log.d("mytag", "changed dot");
+                Log.d("mytag","state " + currentBrushType.toString());
                 break;
             case 1:
-                Log.d("mytag", "changed line");
                 currentBrushType = brushTypes.LINE;
+                Log.d("mytag", "changed line");
+                Log.d("mytag","state " + currentBrushType.toString());
                 break;
             case 2:
                 currentBrushType = brushTypes.RECT;
@@ -129,6 +134,7 @@ public class myCanvas extends View {
                 currentBrushType = brushTypes.CIRCLE;
                 break;
             default:
+                Log.d("mytag", "default");
                 break;
         }
     }
