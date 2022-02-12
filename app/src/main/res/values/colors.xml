@@ -10,5 +10,6 @@
 
 
     <color name="tab_selected">#E4E4E4</color>
+    <color name="tab_icon_unselected">#747474</color>
     <color name="transparent">#00000000</color>
 </resources>

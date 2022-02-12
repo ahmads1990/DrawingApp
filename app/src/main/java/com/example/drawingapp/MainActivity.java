@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(),
                                String.valueOf(tab.getPosition()),
                                 Toast.LENGTH_SHORT).show();
-                        tabs.getTabAt(tab.getPosition()).getIcon().setAlpha(255);
+                        myCanvas.changeBrush(tab.getPosition());
                     }
 
                     @Override

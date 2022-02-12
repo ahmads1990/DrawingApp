@@ -21,54 +21,53 @@
         android:id="@+id/tabLayout"
         android:layout_width="wrap_content"
 
-        android:background="@drawable/layout_bg"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
+        android:background="@drawable/layout_bg"
+        android:backgroundTint="#F4F4F4"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:tabIndicatorHeight="0dp"
-
-        app:tabRippleColor="@color/purple_700"
-        app:tabUnboundedRipple="false"
         app:tabGravity="center"
-        android:backgroundTint="#F4F4F4"
         app:tabIconTint="#747474"
-        >
+        app:tabIndicatorHeight="0dp"
+        app:tabPadding="8dp"
+    >
+
         <com.google.android.material.tabs.TabItem
             android:id="@+id/tabLayout_item_0"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:icon="@drawable/ic_border_color_black_24dp"
-            />
+            android:icon="@drawable/ic_border_color_black_24dp" />
 
         <com.google.android.material.tabs.TabItem
             android:id="@+id/tabLayout_item_1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/layout_bg"
-            android:icon="@drawable/ic_north_east_black_24dp"/>
+            android:icon="@drawable/ic_north_east_black_24dp" />
 
         <com.google.android.material.tabs.TabItem
             android:id="@+id/tabLayout_item_2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/layout_bg"
-            android:icon="@drawable/ic_crop_square_black_24dp"/>
+            android:icon="@drawable/ic_crop_square_black_24dp" />
 
         <com.google.android.material.tabs.TabItem
             android:id="@+id/tabLayout_item_3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/layout_bg"
-            android:icon="@drawable/ic_radio_button_unchecked_black_24dp"/>
+            android:icon="@drawable/ic_radio_button_unchecked_black_24dp" />
+
         <com.google.android.material.tabs.TabItem
             android:id="@+id/tabLayout_item_4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/layout_bg"
 
-            android:icon="@drawable/ic_color_lens_black_24dp"/>
+            android:icon="@drawable/ic_color_lens_black_24dp" />
     </com.google.android.material.tabs.TabLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
