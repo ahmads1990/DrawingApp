@@ -28,7 +28,7 @@ public class myCanvas extends View {
         RECT,
         CIRCLE
     }
-    brushTypes currentBrushType;
+    static brushTypes currentBrushType;
     Paint paint;
     Path path;
 
