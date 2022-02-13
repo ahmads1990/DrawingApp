@@ -31,7 +31,10 @@
         app:tabGravity="center"
         app:tabIconTint="#747474"
         app:tabIndicatorHeight="0dp"
-        app:tabPadding="8dp"
+        app:tabPadding="12dp"
+        app:tabPaddingStart="15dp"
+        app:tabPaddingEnd="15dp"
+
     >
 
         <com.google.android.material.tabs.TabItem
