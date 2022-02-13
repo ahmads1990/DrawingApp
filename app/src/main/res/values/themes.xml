@@ -2,7 +2,7 @@
     <!-- Base application theme. -->
     <style name="Theme.DrawingApp" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple_500</item>
+        <item name="colorPrimary">@color/black</item>
         <item name="colorPrimaryVariant">@color/purple_700</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
@@ -14,9 +14,11 @@
         <!-- Customize your theme here. -->
     </style>
 
-    <style name="Base.Widget.Design.TabLayout" parent="android:Widget">
+    <!-- Customize your theme here.
+    <style name="Widget.App.TabLayout" parent="Widget.MaterialComponents.TabLayout">
         <item name="tabBackground">@drawable/tab_background</item>
         <item name="tabIconTint">@drawable/tab_text_color</item>
 
     </style>
+ -->
 </resources>

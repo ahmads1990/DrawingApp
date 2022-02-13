@@ -6,7 +6,6 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PointF;
-import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -16,6 +15,7 @@ import androidx.annotation.Nullable;
 
 import com.example.drawingapp.shapes.Arrow;
 import com.example.drawingapp.shapes.Circle;
+import com.example.drawingapp.shapes.Line;
 import com.example.drawingapp.shapes.Rectangle;
 
 import java.util.ArrayList;
@@ -23,30 +23,21 @@ import java.util.ArrayList;
 
 public class myCanvas extends View {
 
-
-    public enum brushTypes{
-        DOT,
-        LINE,
-        RECT,
-        CIRCLE
-    }
     static brushTypes currentBrushType;
-    Paint paint;
+    static Paint paint;
     Path path;
-
-    ArrayList<Path> pathArrayList;
     //shapes
-    ArrayList<Arrow> lineArrayList;
+    ArrayList<Line> lineArrayList;
+    ArrayList<Arrow> arrowArrayList;
     ArrayList<Rectangle> rectArrayList;
     ArrayList<Circle> circleArrayList;
-
     //points for drawing shapes
     PointF startPoint;
     PointF endPoint;
-
     boolean doneDrawing = false;
     public myCanvas(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
+
 
         Log.d("mytag", "started here");
         currentBrushType = brushTypes.DOT;
@@ -54,8 +45,8 @@ public class myCanvas extends View {
         startPoint = new PointF();
         endPoint = new PointF();
 
-        pathArrayList = new ArrayList<>();
         lineArrayList = new ArrayList<>();
+        arrowArrayList = new ArrayList<>();
         rectArrayList = new ArrayList<>();
         circleArrayList = new ArrayList<>();
 
@@ -73,7 +64,7 @@ public class myCanvas extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        int i =1;
+        int i = 1;
 
         //
         Log.d("mytag", "current " + currentBrushType.toString());
@@ -83,37 +74,38 @@ public class myCanvas extends View {
                 case DOT:
                     Log.d("mytag", "0");
                     //canvas.drawPath(path, paint);
+                    //   lineArrayList.add(new Line(path, paint));
                     break;
                 case LINE:
                     Log.d("mytag", "1");
-                    lineArrayList.add(new Arrow(startPoint.x, startPoint.y, endPoint.x, endPoint.y, paint));
+                    arrowArrayList.add(new Arrow(startPoint.x, startPoint.y, endPoint.x, endPoint.y, new Paint(paint)));
                     break;
                 case RECT:
                     Log.d("mytag", "2");
-                    rectArrayList.add(new Rectangle(startPoint.x, startPoint.y, endPoint.x, endPoint.y, paint));
+                    rectArrayList.add(new Rectangle(startPoint.x, startPoint.y, endPoint.x, endPoint.y, new Paint(paint)));
                     break;
 
                 case CIRCLE:
                     Log.d("mytag", "3");
-                    circleArrayList.add(new Circle(startPoint.x, startPoint.y, endPoint.x, endPoint.y, paint));
+                    circleArrayList.add(new Circle(startPoint.x, startPoint.y, endPoint.x, endPoint.y, new Paint(paint)));
                     break;
 
                 default:
                     break;
             }
         }
-        for (Path path : pathArrayList) {
+        for (Line line : lineArrayList) {
             //Log.d("mytag1", "draw " + i);
             i++;
-            canvas.drawPath(path, paint);
+            line.drawLine(canvas);
         }
-        for (Arrow lin : lineArrayList){
-            lin.drawArrow(canvas);
+        for (Arrow arrow : arrowArrayList) {
+            arrow.drawArrow(canvas);
         }
-        for (Rectangle rec: rectArrayList){
+        for (Rectangle rec : rectArrayList) {
             rec.drawRect(canvas);
         }
-        for (Circle circle: circleArrayList){
+        for (Circle circle : circleArrayList) {
             circle.drawCircle(canvas);
         }
     }
@@ -123,18 +115,18 @@ public class myCanvas extends View {
         float x = event.getX();
         float y = event.getY();
 
-        switch (event.getAction()){
+        switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 path = new Path();
                 //on key down move the path start to x,y
                 path.moveTo(x, y);
-                startPoint.x=x;
-                startPoint.y=y;
+                startPoint.x = x;
+                startPoint.y = y;
+
 
                 //add path to arraylist
                 if (currentBrushType == brushTypes.DOT) {
-                    Log.d("mytag1", "h1h1");
-                    pathArrayList.add(path);
+                    lineArrayList.add(new Line(path, new Paint(paint)));
                 }
                 doneDrawing = false;
                 break;
@@ -147,8 +139,8 @@ public class myCanvas extends View {
             case MotionEvent.ACTION_UP:
                 //on key up the drawing is finished
                 //set end point x y
-                endPoint.x=x;
-                endPoint.y=y;
+                endPoint.x = x;
+                endPoint.y = y;
                 doneDrawing = true;
                 break;
 
@@ -160,11 +152,10 @@ public class myCanvas extends View {
         return true;
     }
 
-
-    public void changeBrush(int i){
+    public void changeBrush(int i) {
 
         //change brush type based on the order of the tab
-        switch (i){
+        switch (i) {
             case 0:
                 currentBrushType = brushTypes.DOT;
                 Log.d("mytag", "changed dot");
@@ -183,6 +174,35 @@ public class myCanvas extends View {
                 Log.d("mytag", "default");
                 break;
         }
-        Log.d("mytag","state " + currentBrushType.toString());
+        Log.d("mytag", "state " + currentBrushType.toString());
     }
+
+    public void changeColor(int i) {
+        switch (i) {
+            case 0:
+                paint.setColor(Color.RED);
+                break;
+            case 1:
+                paint.setColor(Color.GREEN);
+                break;
+            case 2:
+                paint.setColor(Color.BLUE);
+                break;
+            case 3:
+                paint.setColor(Color.BLACK);
+                break;
+            default:
+                paint.setColor(Color.BLACK);
+                break;
+        }
+    }
+
+    public enum brushTypes {
+        DOT,
+        LINE,
+        RECT,
+        CIRCLE
+    }
+
+
 }
