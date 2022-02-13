@@ -13,6 +13,8 @@ import android.view.View;
 
 import androidx.annotation.Nullable;
 
+import com.example.drawingapp.shapes.Arrow;
+
 import java.util.ArrayList;
 
 
@@ -75,8 +77,7 @@ public class myCanvas extends View {
                     break;
                 case LINE:
                     Log.d("mytag", "1");
-                    lineArrayList.add(new Arrow(startPoint.x, startPoint.y, endPoint.x, endPoint.y));
-                    //canvas.drawLine(startPoint.x, startPoint.y, endPoint.x, endPoint.y, paint);
+                    lineArrayList.add(new Arrow(startPoint.x, startPoint.y, endPoint.x, endPoint.y, paint));
                     break;
                 case RECT:
                     break;
@@ -94,33 +95,10 @@ public class myCanvas extends View {
             canvas.drawPath(path, paint);
         }
         for (Arrow lin : lineArrayList){
-            canvas.drawLine(lin.startX, lin.startY, lin.stopX, lin.stopY, paint);
-            //line math
-            float angle,lineLen, edgeLen;
-            angle = 30;
-            lineLen = (float) Math.sqrt(
-                    (Math.pow(lin.stopY, 2) - Math.pow(lin.startY, 2))
-                            + (Math.pow(lin.stopX, 2) + Math.pow(lin.startX,2)));
-            edgeLen = lineLen*0.3f;
-            //
-            float edgeLeft[] = {0f,0f};
-            float edgeRight[] = {0f,0f};
-            edgeLeft[0] = lin.stopX + (0.4f * (float)(((lin.startX - lin.stopX) * Math.cos(angle)) + ((lin.startY - lin.stopY) * Math.cos(angle))));
-            edgeLeft[1] = lin.stopY + (0.4f * (float)(((lin.startY - lin.stopY) * Math.cos(angle)) - ((lin.startX - lin.stopX) * Math.cos(angle))));
-
-            edgeRight[0] = lin.stopX + (0.4f * (float)(((lin.startX - lin.stopX) * Math.cos(angle)) - ((lin.startY - lin.stopY) * Math.cos(angle))));
-            edgeRight[1] =  lin.stopY + (0.4f * (float)(((lin.startY - lin.stopY) * Math.cos(angle)) + ((lin.startX - lin.stopX) * Math.cos(angle))));
-
-            //draw them
-            canvas.drawLine(lin.stopX, lin.stopY, edgeLeft[0], edgeLeft[1], paint);
-            canvas.drawLine(lin.stopX, lin.stopY, edgeRight[0], edgeRight[1], paint);
+            lin.drawArrow(canvas);
         }
     }
 
-    private void brushDrawLine(Canvas canvas) {
-
-        //drawLine(startPoint.x, startPoint.y, endPoint.x, endPoint.y, paint);
-    }
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         float x = event.getX();
