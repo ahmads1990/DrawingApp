@@ -1,21 +1,15 @@
 package com.example.drawingapp;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
-import android.graphics.PathMeasure;
-import android.graphics.Point;
 import android.graphics.PointF;
-import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
@@ -36,7 +30,7 @@ public class myCanvas extends View {
     Path path;
 
     ArrayList<Path> pathArrayList;
-    ArrayList<line> lineArrayList;
+    ArrayList<Arrow> lineArrayList;
     //points for drawing shapes
     PointF startPoint;
     PointF endPoint;
@@ -81,7 +75,7 @@ public class myCanvas extends View {
                     break;
                 case LINE:
                     Log.d("mytag", "1");
-                    lineArrayList.add(new line(startPoint.x, startPoint.y, endPoint.x, endPoint.y));
+                    lineArrayList.add(new Arrow(startPoint.x, startPoint.y, endPoint.x, endPoint.y));
                     //canvas.drawLine(startPoint.x, startPoint.y, endPoint.x, endPoint.y, paint);
                     break;
                 case RECT:
@@ -99,8 +93,27 @@ public class myCanvas extends View {
             i++;
             canvas.drawPath(path, paint);
         }
-        for (line lin : lineArrayList){
+        for (Arrow lin : lineArrayList){
             canvas.drawLine(lin.startX, lin.startY, lin.stopX, lin.stopY, paint);
+            //line math
+            float angle,lineLen, edgeLen;
+            angle = 30;
+            lineLen = (float) Math.sqrt(
+                    (Math.pow(lin.stopY, 2) - Math.pow(lin.startY, 2))
+                            + (Math.pow(lin.stopX, 2) + Math.pow(lin.startX,2)));
+            edgeLen = lineLen*0.3f;
+            //
+            float edgeLeft[] = {0f,0f};
+            float edgeRight[] = {0f,0f};
+            edgeLeft[0] = lin.stopX + (0.4f * (float)(((lin.startX - lin.stopX) * Math.cos(angle)) + ((lin.startY - lin.stopY) * Math.cos(angle))));
+            edgeLeft[1] = lin.stopY + (0.4f * (float)(((lin.startY - lin.stopY) * Math.cos(angle)) - ((lin.startX - lin.stopX) * Math.cos(angle))));
+
+            edgeRight[0] = lin.stopX + (0.4f * (float)(((lin.startX - lin.stopX) * Math.cos(angle)) - ((lin.startY - lin.stopY) * Math.cos(angle))));
+            edgeRight[1] =  lin.stopY + (0.4f * (float)(((lin.startY - lin.stopY) * Math.cos(angle)) + ((lin.startX - lin.stopX) * Math.cos(angle))));
+
+            //draw them
+            canvas.drawLine(lin.stopX, lin.stopY, edgeLeft[0], edgeLeft[1], paint);
+            canvas.drawLine(lin.stopX, lin.stopY, edgeRight[0], edgeRight[1], paint);
         }
     }
 
