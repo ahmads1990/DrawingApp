@@ -6,6 +6,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.PathMeasure;
 import android.graphics.Point;
 import android.graphics.PointF;
 import android.graphics.Rect;
@@ -17,6 +18,8 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+
+import java.util.ArrayList;
 
 
 public class myCanvas extends View {
@@ -32,12 +35,13 @@ public class myCanvas extends View {
     Paint paint;
     Path path;
 
-
+    ArrayList<Path> pathArrayList;
+    ArrayList<line> lineArrayList;
     //points for drawing shapes
     PointF startPoint;
     PointF endPoint;
 
-
+    boolean doneDrawing = false;
     public myCanvas(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
 
@@ -46,6 +50,10 @@ public class myCanvas extends View {
 
         startPoint = new PointF();
         endPoint = new PointF();
+
+        pathArrayList = new ArrayList<>();
+        lineArrayList = new ArrayList<>();
+
         paint = new Paint();
         path = new Path();
         paint.setAntiAlias(true);
@@ -60,30 +68,45 @@ public class myCanvas extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
+        int i =1;
+
+        //
         Log.d("mytag", "current " + currentBrushType.toString());
-        switch (currentBrushType){
-            case DOT:
-                Log.d("mytag", "0");
-                canvas.drawPath(path, paint);
-                break;
-            case LINE:
-                Log.d("mytag", "1");
-                canvas.drawLine(startPoint.x, startPoint.y, endPoint.x, endPoint.y, paint);
-                break;
-            case RECT:
-                break;
 
-            case CIRCLE:
-                break;
+        if (doneDrawing) {
+            switch (currentBrushType) {
+                case DOT:
+                    Log.d("mytag", "0");
+                    //canvas.drawPath(path, paint);
+                    break;
+                case LINE:
+                    Log.d("mytag", "1");
+                    lineArrayList.add(new line(startPoint.x, startPoint.y, endPoint.x, endPoint.y));
+                    //canvas.drawLine(startPoint.x, startPoint.y, endPoint.x, endPoint.y, paint);
+                    break;
+                case RECT:
+                    break;
 
-            default:
-                break;
+                case CIRCLE:
+                    break;
+
+                default:
+                    break;
+            }
+        }
+        for (Path path : pathArrayList) {
+            //Log.d("mytag1", "draw " + i);
+            i++;
+            canvas.drawPath(path, paint);
+        }
+        for (line lin : lineArrayList){
+            canvas.drawLine(lin.startX, lin.startY, lin.stopX, lin.stopY, paint);
         }
     }
 
     private void brushDrawLine(Canvas canvas) {
 
-        canvas.drawLine(startPoint.x, startPoint.y, endPoint.x, endPoint.y, paint);
+        //drawLine(startPoint.x, startPoint.y, endPoint.x, endPoint.y, paint);
     }
     @Override
     public boolean onTouchEvent(MotionEvent event) {
@@ -92,16 +115,31 @@ public class myCanvas extends View {
 
         switch (event.getAction()){
             case MotionEvent.ACTION_DOWN:
-                path.moveTo(x,y);
-                startPoint = new PointF(x,y);
+                path = new Path();
+                //on key down move the path start to x,y
+                path.moveTo(x, y);
+                startPoint.x=x;
+                startPoint.y=y;
+
+                //add path to arraylist
+                if (currentBrushType == brushTypes.DOT) {
+                    Log.d("mytag1", "h1h1");
+                    pathArrayList.add(path);
+                }
+                doneDrawing = false;
                 break;
 
             case MotionEvent.ACTION_MOVE:
-                path.lineTo(x,y);
+                //on key movement add the new points to path
+                path.lineTo(x, y);
                 break;
 
             case MotionEvent.ACTION_UP:
-                endPoint = new PointF(x,y);
+                //on key up the drawing is finished
+                //set end point x y
+                endPoint.x=x;
+                endPoint.y=y;
+                doneDrawing = true;
                 break;
 
             default:
@@ -120,12 +158,10 @@ public class myCanvas extends View {
             case 0:
                 currentBrushType = brushTypes.DOT;
                 Log.d("mytag", "changed dot");
-                Log.d("mytag","state " + currentBrushType.toString());
                 break;
             case 1:
                 currentBrushType = brushTypes.LINE;
                 Log.d("mytag", "changed line");
-                Log.d("mytag","state " + currentBrushType.toString());
                 break;
             case 2:
                 currentBrushType = brushTypes.RECT;
@@ -137,5 +173,6 @@ public class myCanvas extends View {
                 Log.d("mytag", "default");
                 break;
         }
+        Log.d("mytag","state " + currentBrushType.toString());
     }
 }
