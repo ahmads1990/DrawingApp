@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PointF;
+import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -14,6 +15,8 @@ import android.view.View;
 import androidx.annotation.Nullable;
 
 import com.example.drawingapp.shapes.Arrow;
+import com.example.drawingapp.shapes.Circle;
+import com.example.drawingapp.shapes.Rectangle;
 
 import java.util.ArrayList;
 
@@ -32,7 +35,11 @@ public class myCanvas extends View {
     Path path;
 
     ArrayList<Path> pathArrayList;
+    //shapes
     ArrayList<Arrow> lineArrayList;
+    ArrayList<Rectangle> rectArrayList;
+    ArrayList<Circle> circleArrayList;
+
     //points for drawing shapes
     PointF startPoint;
     PointF endPoint;
@@ -49,6 +56,8 @@ public class myCanvas extends View {
 
         pathArrayList = new ArrayList<>();
         lineArrayList = new ArrayList<>();
+        rectArrayList = new ArrayList<>();
+        circleArrayList = new ArrayList<>();
 
         paint = new Paint();
         path = new Path();
@@ -80,9 +89,13 @@ public class myCanvas extends View {
                     lineArrayList.add(new Arrow(startPoint.x, startPoint.y, endPoint.x, endPoint.y, paint));
                     break;
                 case RECT:
+                    Log.d("mytag", "2");
+                    rectArrayList.add(new Rectangle(startPoint.x, startPoint.y, endPoint.x, endPoint.y, paint));
                     break;
 
                 case CIRCLE:
+                    Log.d("mytag", "3");
+                    circleArrayList.add(new Circle(startPoint.x, startPoint.y, endPoint.x, endPoint.y, paint));
                     break;
 
                 default:
@@ -96,6 +109,12 @@ public class myCanvas extends View {
         }
         for (Arrow lin : lineArrayList){
             lin.drawArrow(canvas);
+        }
+        for (Rectangle rec: rectArrayList){
+            rec.drawRect(canvas);
+        }
+        for (Circle circle: circleArrayList){
+            circle.drawCircle(canvas);
         }
     }
 
