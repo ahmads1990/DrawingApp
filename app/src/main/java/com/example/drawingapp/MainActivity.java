@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -24,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
 
         //color tabs
         colorTabs = (TabLayout) findViewById(R.id.color_tab_layout);
+        colorTabs.setVisibility(View.GONE);
         setupColorTabIcons();
         tabs = (TabLayout) findViewById(R.id.tabLayout);
 
@@ -34,11 +36,17 @@ public class MainActivity extends AppCompatActivity {
 
                         Log.d("mytag", "shape tag position " + tab.getPosition());
                         myCanvas.changeBrush(tab.getPosition());
+
+                            if (tab.getPosition() == 4){
+                                colorTabs.setVisibility(View.VISIBLE);
+                            }
                     }
 
                     @Override
                     public void onTabUnselected(TabLayout.Tab tab) {
-
+                        if (tab.getPosition() == 4){
+                            colorTabs.setVisibility(View.GONE);
+                        }
                     }
 
                     @Override
@@ -76,4 +84,5 @@ public class MainActivity extends AppCompatActivity {
         colorTabs.getTabAt(2).getIcon().setColorFilter(Color.BLUE, PorterDuff.Mode.SRC_IN);
         colorTabs.getTabAt(3).getIcon().setColorFilter(Color.BLACK, PorterDuff.Mode.SRC_IN);
     }
+
 }
